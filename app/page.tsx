@@ -36,10 +36,28 @@ async function getGitHubRepos() {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    return data.filter(
+    const filtered = data.filter(
       (r: { name: string; fork: boolean }) =>
         !r.fork && !EXCLUDED_REPOS.includes(r.name)
     );
+
+    // Fetch all languages for each repo in parallel
+    const withLanguages = await Promise.all(
+      filtered.map(async (repo: { name: string; languages_url: string }) => {
+        try {
+          const langRes = await fetch(repo.languages_url, {
+            next: { revalidate: 86400 },
+          });
+          if (!langRes.ok) return { ...repo, languages: {} };
+          const languages = await langRes.json();
+          return { ...repo, languages };
+        } catch {
+          return { ...repo, languages: {} };
+        }
+      })
+    );
+
+    return withLanguages;
   } catch {
     return [];
   }
