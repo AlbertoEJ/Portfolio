@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import About from "@/components/about";
 import Toolkit from "@/components/toolkit";
+import Projects from "@/components/projects";
 import Contact from "@/components/contact";
 
 async function getScholarStats(): Promise<{ citations: number; publications: number }> {
@@ -11,7 +12,7 @@ async function getScholarStats(): Promise<{ citations: number; publications: num
     if (!key) return fallback;
     const res = await fetch(
       `https://www.searchapi.io/api/v1/search?engine=google_scholar_author&author_id=5vIyPXwAAAAJ&api_key=${key}`,
-      { next: { revalidate: 86400 } }
+      { next: { revalidate: 2592000 } }
     );
     if (!res.ok) return fallback;
     const data = await res.json();
@@ -25,8 +26,30 @@ async function getScholarStats(): Promise<{ citations: number; publications: num
   }
 }
 
+const EXCLUDED_REPOS = ["Portfolio"];
+
+async function getGitHubRepos() {
+  try {
+    const res = await fetch(
+      "https://api.github.com/users/AlbertoEJ/repos?sort=updated&per_page=100&type=public",
+      { next: { revalidate: 86400 } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.filter(
+      (r: { name: string; fork: boolean }) =>
+        !r.fork && !EXCLUDED_REPOS.includes(r.name)
+    );
+  } catch {
+    return [];
+  }
+}
+
 export default async function Home() {
-  const scholar = await getScholarStats();
+  const [scholar, repos] = await Promise.all([
+    getScholarStats(),
+    getGitHubRepos(),
+  ]);
 
   return (
     <div id="app-wrapper">
@@ -35,6 +58,7 @@ export default async function Home() {
         <Hero />
         <About citations={scholar.citations} publications={scholar.publications} />
         <Toolkit />
+        <Projects repos={repos} />
         <Contact />
       </div>
     </div>

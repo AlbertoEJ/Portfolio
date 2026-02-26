@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motio
 const navLinks = [
   { label: "about", href: "#about" },
   { label: "expertise", href: "#toolkit" },
+  { label: "projects", href: "#projects" },
   { label: "contact", href: "#contact" },
 ];
 
