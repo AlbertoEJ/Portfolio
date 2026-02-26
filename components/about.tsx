@@ -3,13 +3,12 @@
 import Image from "next/image";
 import { RevealSection, Parallax, ScrollRevealText } from "@/components/animate";
 
-const stats = [
-  { value: "5+", label: "Years in ML/AI" },
-  { value: "10+", label: "Projects shipped" },
-  { value: "3", label: "Publications" },
-];
-
-export default function About() {
+export default function About({ citations, publications }: { citations: number; publications: number }) {
+  const stats = [
+    { value: "5+", label: "Years in ML/AI" },
+    { value: String(publications), label: "Publications" },
+    { value: String(citations), label: "Citations" },
+  ];
   return (
     <div id="about">
       <RevealSection>
@@ -72,15 +71,25 @@ export default function About() {
 
             {/* Stats */}
             <ScrollRevealText>
-              <div className="flex gap-12 pt-2">
-                {stats.map((s) => (
-                  <div key={s.label} className="flex flex-col gap-1">
-                    <span className="text-3xl font-bold text-[#141414]">
-                      {s.value}
-                    </span>
-                    <span className="text-sm text-[#807f7a]">{s.label}</span>
-                  </div>
-                ))}
+              <div className="flex flex-col gap-3 pt-2">
+                <div className="flex gap-12">
+                  {stats.map((s) => (
+                    <div key={s.label} className="flex flex-col gap-1">
+                      <span className="text-3xl font-bold text-[#141414]">
+                        {s.value}
+                      </span>
+                      <span className="text-sm text-[#807f7a]">{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <a
+                  href="https://scholar.google.com/citations?user=5vIyPXwAAAAJ&hl=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#b0afaa] transition-colors hover:text-[#666661]"
+                >
+                  Source: Google Scholar
+                </a>
               </div>
             </ScrollRevealText>
           </div>
