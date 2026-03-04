@@ -31,7 +31,8 @@ const EXCLUDED_REPOS = ["Portfolio"];
 async function getGitHubRepos() {
   try {
     const res = await fetch(
-      "https://api.github.com/users/AlbertoEJ/repos?sort=updated&per_page=100&type=public"
+      "https://api.github.com/users/AlbertoEJ/repos?sort=updated&per_page=100&type=public",
+      { next: { revalidate: 3600 } }
     );
     if (!res.ok) return [];
     const data = await res.json();
@@ -44,7 +45,7 @@ async function getGitHubRepos() {
     const withLanguages = await Promise.all(
       filtered.map(async (repo: { name: string; languages_url: string }) => {
         try {
-          const langRes = await fetch(repo.languages_url);
+          const langRes = await fetch(repo.languages_url, { next: { revalidate: 3600 } });
           if (!langRes.ok) return { ...repo, languages: {} };
           const languages = await langRes.json();
           return { ...repo, languages };
