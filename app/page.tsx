@@ -61,6 +61,29 @@ async function getGitHubRepos() {
   }
 }
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Alberto Espinosa",
+  url: "https://albertoej.com",
+  email: "hola@albertoej.com",
+  jobTitle: "AI/ML Engineer & Researcher",
+  description:
+    "PhD candidate in Computer Science specializing in deep learning, computer vision, NLP, and LLM solutions.",
+  sameAs: [
+    "https://github.com/AlbertoEJ",
+    "https://www.linkedin.com/in/albertoespinosaj/",
+    "https://scholar.google.com/citations?user=5vIyPXwAAAAJ&hl=en",
+  ],
+  knowsAbout: [
+    "Machine Learning",
+    "Deep Learning",
+    "Computer Vision",
+    "Natural Language Processing",
+    "Large Language Models",
+  ],
+};
+
 export default async function Home() {
   const [scholar, repos] = await Promise.all([
     getScholarStats(),
@@ -69,14 +92,18 @@ export default async function Home() {
 
   return (
     <div id="app-wrapper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
-      <div id="app-content">
+      <main id="app-content">
         <Hero />
         <About citations={scholar.citations} publications={scholar.publications} />
         <Toolkit />
         <Projects repos={repos} />
         <Contact />
-      </div>
+      </main>
     </div>
   );
 }

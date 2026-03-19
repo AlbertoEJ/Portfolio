@@ -19,7 +19,7 @@ export default function About({ citations, publications }: { citations: number; 
             <div className="group relative h-[360px] w-full shrink-0 overflow-hidden rounded-3xl bg-[#ebeae6] lg:h-[460px] lg:w-[380px]">
               <Image
                 src="/images/me3_main.png"
-                alt="Alberto Espinosa"
+                alt="Alberto Espinosa — AI/ML Engineer and PhD candidate"
                 fill
                 className="object-cover transition-opacity duration-500 group-hover:opacity-0"
                 sizes="(max-width: 1024px) 100vw, 380px"
@@ -27,7 +27,7 @@ export default function About({ citations, publications }: { citations: number; 
               />
               <Image
                 src="/images/me2.jpg"
-                alt="Alberto Espinosa"
+                alt="Alberto Espinosa presenting research"
                 fill
                 className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 sizes="(max-width: 1024px) 100vw, 380px"

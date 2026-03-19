@@ -15,7 +15,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="flex min-h-[calc(100vh-68px)] flex-col justify-between px-8 pt-16 pb-16 md:px-16 lg:px-[140px]">
+    <section
+      aria-label="Introduction"
+      className="flex min-h-[calc(100vh-68px)] flex-col justify-between px-8 pt-16 pb-16 md:px-16 lg:px-[140px]"
+    >
       <div className="flex-1" />
 
       <div className="flex flex-col gap-8">
